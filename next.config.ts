@@ -1,9 +1,15 @@
 import type { NextConfig } from "next";
 
+const isGitHubPages = process.env.GITHUB_PAGES === "true";
+const basePath = isGitHubPages ? "/fuselage" : "";
+
 const nextConfig: NextConfig = {
-  // GitHub Pages serves this repository at the account root, so the standard
-  // Next.js static export can be deployed without a path prefix.
-  output: process.env.GITHUB_PAGES ? "export" : undefined,
+  output: isGitHubPages ? "export" : undefined,
+  basePath,
+  assetPrefix: basePath || undefined,
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
   images: { unoptimized: true },
   trailingSlash: true,
 };
